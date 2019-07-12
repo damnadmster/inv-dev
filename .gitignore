@@ -38,3 +38,5 @@ config/secrets.yml
 
 /.bundle
 /vendor/bundle
+/mt*.log
+/start_server.sh
