@@ -1,0 +1,20 @@
+
+<p>
+  <strong>Name:</strong>
+  <%= @type.name %>
+</p>
+
+<p>
+  <strong>Num:</strong>
+  <%= @type.num %>
+</p>
+
+<p>
+  <strong>Filial:</strong>
+  <%= @type.name %>
+</p>
+
+<% if current_user.admin? %>
+    <%= link_to 'Edit', edit_type_path(@type) %> |
+<% end %>
+    <%= link_to 'Back', types_path %>

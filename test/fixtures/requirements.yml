@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  wishes: MyText
+  level: 1
+  amount: 1
+  price: 1
+  link: MyString
+  for_what: MyString
+  done: false
+  got: false
+  filial: one
+
+two:
+  wishes: MyText
+  level: 1
+  amount: 1
+  price: 1
+  link: MyString
+  for_what: MyString
+  done: false
+  got: false
+  filial: two

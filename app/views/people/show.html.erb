@@ -1,0 +1,13 @@
+
+<p>
+  <strong>Фамилия, Имя , Отчество:</strong>
+  <%= @person.FIO %>
+</p>
+
+<p>
+  <strong>Филиал:</strong>
+  <%= @person.filial.name %>
+</p>
+
+<%= link_to 'Редактировать', edit_person_path(@person) %> |
+<%= link_to 'Вернуться', people_path %>

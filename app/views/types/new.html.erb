@@ -1,0 +1,5 @@
+<% if current_user.admin? %>
+    <h1 class="text-success">Новый тип устройства</h1>
+    <%= render 'form', type: @type %>
+    <%= link_to 'Back', types_path %>
+<% end %>

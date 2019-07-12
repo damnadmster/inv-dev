@@ -1,0 +1,21 @@
+
+<p>
+  <strong>Num:</strong>
+  <%= @filial.num %>
+</p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @filial.name %>
+</p>
+
+<p>
+  <strong>Code:</strong>
+  <%= @filial.code %>
+</p>
+
+    <% if current_user.admin? %>
+	<%= link_to 'Ред.', edit_filial_path(@filial) %> |
+	<%= link_to 'Возврат', filials_path %> |
+	<%= link_to 'новый филиал', new_filial_path %>
+    <% end %>

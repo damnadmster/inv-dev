@@ -1,0 +1,37 @@
+<% provide(:title, 'редактирование пользователя') %>
+<h1>редактирование пользователя</h1>
+<% if (current_user.admin? || current_user.id == @user.id )%>
+<div class="row">
+  <div class="col-md-2 col-md-offset-5">
+    <%= form_for(@user) do |f| %>
+
+      <%= render 'shared/error_messages' %>
+
+      <%= f.label :name, "Имя пользователя"  %>
+      <%= f.text_field :name, class: 'form-control'  %>
+
+      <%= f.label :email, "почта" %>
+      <%= f.email_field :email, class: 'form-control'  %>
+
+
+      <%= f.label :filial_id, "филиал" %>
+      <%= select(:user, :filial_id, @fil_options) %>
+
+    <% if current_user.admin? %>
+        <%= f.label :admin, "админ?" %>
+        <%= f.check_box :admin, class: 'form-control'  %>
+
+        <%= f.label :right, "права" %>
+        <%= f.number_field :right, class: 'form-control'  %>
+    <% end %>
+      <%= f.label :password, "пароль" %>
+      <%= f.password_field :password, class: 'form-control'  %>
+
+      <%= f.label :password_confirmation, "еще раз пароль" %>
+      <%= f.password_field :password_confirmation, class: 'form-control'  %>
+
+      <%= f.submit "Внести изменения", class: "btn btn-warning" %>
+    <% end %>
+  </div>
+</div>
+<% end %>

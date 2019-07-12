@@ -1,0 +1,26 @@
+
+<table class="table-bordered">
+  <thead  class="align-center"> 
+    <tr>
+      <th  class="text-center">имя</th>
+      <th  class="text-center">email</th>
+      <th  class="text-center">admin?</th>
+      <th  class="text-center">filial</th>
+      <th  class="text-center">right</th>
+    </tr>
+  </thead>
+
+  <tbody>
+      <tr class="text-center">
+        <td><%= @user.name %></td>
+        <td><%= @user.email %></td>
+	<% if @user.admin? %>
+    	    <td class="bg-primary">ДА</td>
+	<% else %>
+	    <td class="bg-secondary">НЕТ</td>
+	<% end %>
+        <td><%= @user.filial.name %></td>
+        <td><%= @user.right %></td>
+      </tr>
+  </tbody>
+</table>

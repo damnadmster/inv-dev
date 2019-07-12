@@ -1,0 +1,69 @@
+<div class="row">
+<div class="col-sm">
+<h1>Filials</h1>
+    <% if current_user.admin? %>
+	<h2 class="p-3 mb-2 bg-success text-white text-center"> всего: <%= @filials.count%></h2>
+	
+    <% end %>
+<table  class="table table-bordered ">
+  <thead>
+    <tr>
+      <th>id</th>
+      <th>номер</th>
+      <th>Наименование филиала</th>
+      <th>код филиала (как в почте)</th>
+      <th>количество зарегистрированных устройств</th>
+      <th colspan="4"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% if current_user.admin? %>
+		<%=  button_to "Экспортировать оборудование всех филиалов в CSV", exportall_dev_path(format: "csv"), method: :post  %>
+		<% @filials.each do |filial| %>
+		  <tr class="text-center">
+			<td><%= filial.id %></td>
+			<td><%= filial.num %></td>
+			<td><%= filial.name %></td>
+			<td><%= filial.code %></td>
+			<% if filial.devices.count.to_i == 0 %>
+					<td>
+				<div class="p-2 bg-danger text-white">
+					<%= filial.devices.count %>
+				</div>
+				</td>
+			<% else %>
+					<td>
+				<div class="bg-light text-dark">
+					<%= filial.devices.count %>
+				</div>
+				</td>
+			<% end %>
+			<td><%= link_to 'Показать', filial %></td>
+			<td><%= link_to 'Редактировать', edit_filial_path(filial) %></td>
+			<td><%= link_to 'Удалить', filial, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+			<td>
+				<%=  button_to "Export to csv", export_dev_path(format: "csv"), method: :post , params: { fil: filial.id}  %>
+			</td>
+		  </tr>
+		<% end %>
+    <% else %>
+        <td><%= @filials.id %></td>
+        <td><%= @filials.num %></td>
+        <td><%= @filials.name %></td>
+        <td><%= @filials.code %></td>
+        <td><%= @filials.devices.count %></td>
+        <td><%= link_to 'Показать', @filials %></td>
+        <td><%= link_to 'Редактировать', edit_filial_path(@filials) %></td>
+		<td><%=  button_to "Export to csv", export_dev_path(format: "csv"), method: :post , params: { fil: @filials.id}  %></td>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+    <% if current_user.admin? %>
+	<%= link_to 'новый филиал', new_filial_path %>
+    <% end %>
+</div>
+</div>

@@ -1,0 +1,7 @@
+<% if logged_in? %>
+    <h1>Новое устройство</h1>
+
+    <%= render 'form', device: @device %>
+
+    <%= link_to 'Возврат', devices_path %>
+<% end %>

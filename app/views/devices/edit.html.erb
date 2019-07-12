@@ -1,0 +1,8 @@
+ 
+	<h1>Редактирование устройства</h1>
+
+    <%= render 'form', device: @device %>
+    <p> device filial name for history: <%= session[:current_fil] %> </p>
+
+    <%= link_to 'показать', @device %> |
+    <%= link_to 'Возврат', devices_path %>

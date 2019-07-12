@@ -1,0 +1,160 @@
+<div class="row">
+	<div class="col-sm">
+		<% if current_user.admin? %>
+			<h1>Устройства - все филиалы</h1>
+		<% else %>
+			<h1>Устройства - филиал <%= @filial.name %></h1>
+		<% end %>
+		<h2 class="p-3 mb-2 bg-success text-white text-center"> всего: <%= @devices.count%></h2>
+		<% if current_user.admin? %>
+			<div class="w-100" style="background-color: #eee;">
+				<table id="tsearch" class="table table-bordered">
+				<tbody class="align-center">
+					<%= form_tag(filter_all_path, method: :get)   do %>
+					<tr class="active text-center">
+					<td>   
+						<%= label_tag(:sfilial, "Филиал") %> 
+					</td>
+					
+					<td>
+						<%= select(:search, :select_filial, @fil_options, include_blank: true )%>
+					</td>
+					<td>   
+						<%= label_tag(:stype, "Тип оборудования") %> 
+					</td>
+					<td>
+						<%= select(:search, :select_type, @type_options, include_blank: true) %>
+					</td>
+					<td>   
+						<%= label_tag(:siswork, "Рабочий?") %> 
+					</td>
+					<td>
+						<%= select_tag "select_iswork", options_for_select([['Да',1],['Нет', 0]]), include_blank: true %>
+					</td>
+					<td>   
+						<%= label_tag(:scancel, "На списание?") %> 
+					</td>
+					<td>
+						<%= select_tag "select_cancel", options_for_select([['Да',1],['Нет', 0]]), include_blank: true %>
+					</td>
+					<td>   
+						<%= label_tag(:repair, "В ремонте?") %> 
+					</td>
+					<td>
+						<%= select_tag "select_repair", options_for_select([['Да',1],['Нет', 0]]), include_blank: true %>
+					</td>
+					<td>
+						<%= submit_tag "поиск", :class =>  "btn btn-sm btm-block" %>
+					</td>
+					</tr>
+				<% end %>
+				</tbody>
+			</table>
+			</div> <!--DIV w-25  -->
+		<% end %>
+    </div>
+</div>
+
+
+<%= link_to 'новое устройство', new_device_path , id: "newdev" , class: "btn btn-success"  %>
+<div class="row">
+    <div class="col-sm">
+		<div class="paginate">
+			<%= will_paginate %>
+		</div>
+		<div class="table-responsive">
+			<table class="table  table-bordered table-hover">
+				<thead> 
+					<tr  class="text-center">
+						<th><p>Фото</p>	</th>
+						<th><p>Филиал  </p>	</th>
+						<th>Наименование</th>
+						<th>    тип  </th>
+						<th>Модель</th>
+						<th>Брендовый?</th>
+						<th>инвентарный</th>
+						<th>серийный</th>
+						<th>дата производства</th>
+						<th>процессор</th>
+						<th>ОЗУ</th>
+						<th>    тип  ОС</th>
+						<th>сетевое имя узла</th>
+						<th>Место установки</th>
+						<th>примечание</th>
+						<th>требуется списание</th>
+
+						<th>работает?	</th>
+						<th>акт ремонта</th>
+						<th>в ремонте</th>
+						<th>история</th>
+						<th colspan="3"></th>
+					</tr>
+				</thead>
+				<tbody class="align-center">
+					<% @devices.each do |device| %>
+						<tr class=" text-center">
+							
+										<td>    
+											<%=link_to(image_tag(device.avatar.url(:thumb)), device.avatar.url, target: '_blank')   %>
+										</td>
+											<td><%= device.filial.name %></td>
+											<td><%= device.name %></td>
+											<td><%= device.type.name %>	</td>
+											<td><%= device.model %></td>
+											<td><%= device.brand %></td>
+											<td><%= device.invnum %></td>
+											<td><%= device.serial %></td>
+											<td>
+											<% if !device.dateprod.nil? %>
+											<%= device.dateprod.strftime("%Y-%m") %>
+											<% end %>
+										</td>
+											<td><%= device.proc %></td>
+											<td><%= device.ram %></td>
+											<td><%= device.typeos %></td>
+											<td><%= device.nbname %></td>
+											<td><%= device.place %></td>
+											<td><%= device.mark %></td>
+										<% if device.cancellation? %>
+												<td  class="table-danger">
+												ДА 
+												</td>
+										<% else %>
+											<td>
+												<p class="text-warning"> <b>НЕТ</b> </p>
+											</td>
+										<% end %>
+
+										<td>
+											<% if device.iswork? %>
+											<p  class="text-success"> ДА </p>
+											<% else %>
+											<p class="text-warning"> <b>НЕТ</b> </p>
+											<% end %>
+										</td>
+										<td>
+											<%=link_to(image_tag(device.actimage.url(:thumb)), device.actimage.url, target: '_blank')   %>
+										</td>
+										<td>
+											<% if device.actimage.exists? %>
+											<p  class="text-success"> ДА </p>
+											<% else %>
+											<p class="text-warning"> <b>НЕТ</b> </p>
+											<% end %>
+										</td>
+											<td>
+											<%= pluralize(device.histories.count, "item") %> 
+										</td>
+					
+										<td><%= link_to 'Показать', device , class: "btn" %></td>
+										<td><%= link_to 'Ред.', edit_device_path(device) , class: "btn btn-primary"  %></td>
+										<td><%= link_to 'Удалить', device, method: :delete, data: { confirm: 'Уверен?' } , class: "btn btn-danger"  %></td>
+
+						</tr>
+					<% end %>
+				</tbody>
+			</table>
+		</div>
+    </div>
+</div>
+<%= link_to 'новое устройство', new_device_path ,  id: "newdev",  class: "btn btn-success"  %>

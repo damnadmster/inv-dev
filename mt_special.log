@@ -1,0 +1,2 @@
+multitail  -ec "WARN" ./log/special.log
+

@@ -1,0 +1,104 @@
+
+<p>
+  <%= image_tag @device.avatar.url(:thumb) %>
+</p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @device.name %>
+</p>
+
+
+<p>
+  <strong>Model:</strong>
+  <%= @device.model %>
+</p>
+
+<p>
+  <strong>Invnum:</strong>
+  <%= @device.invnum %>
+</p>
+
+<p>
+  <strong>Serial:</strong>
+  <%= @device.serial %>
+</p>
+
+<p>
+  <strong>Dateprod:</strong>
+  <%= @device.dateprod %>
+</p>
+
+<p>
+  <strong>Proc:</strong>
+  <%= @device.proc %>
+</p>
+
+<p>
+  <strong>Ram:</strong>
+  <%= @device.ram %>
+</p>
+
+<p>
+  <strong>type OS:</strong>
+  <%= @device.typeos %>
+</p>
+
+<p>
+  <strong>netBIOS name:</strong>
+  <%= @device.nbname %>
+</p>
+
+
+
+<p>
+  <strong>Place:</strong>
+  <%= @device.place %>
+</p>
+
+<p>
+  <strong>Mark:</strong>
+  <%= @device.mark %>
+</p>
+
+<p>
+  <strong>Cancellation:</strong>
+  <%= @device.cancellation %>
+</p>
+
+<p>
+  <strong>Type:</strong>
+  <%= @device.type.name %>
+</p>
+
+<p>
+  <strong>Филиал:</strong>
+  <%= @device.filial.name %>
+</p>
+
+<p>
+  <strong>iswork:</strong>
+  <%= @device.iswork %>
+</p>
+
+<p>
+  <strong>в ремонте?:</strong>
+  <%= @device.repair %>
+</p>
+
+<p>
+  <strong>файл акта:</strong>
+    <%=link_to(image_tag(@device.actimage.url(:thumb)), @device.actimage.url, target: '_blank')   %>
+</p>
+
+<p class="p-3 mb-2 bg-warning text-dark">
+  <strong>history:</strong>
+    </br>
+    <% @device.histories.each do |history| %>
+	 ( <%= history.mark %> : выполнен <%= history.created_at.strftime '%Y-%m-%d %H-%M' %> ); </br>
+    <% end %>
+</p>
+
+<%= link_to 'Edit', edit_device_path(@device) %> |
+<%= link_to 'Back', devices_path %>
+

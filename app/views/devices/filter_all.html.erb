@@ -1,0 +1,99 @@
+
+<div class="row">
+    <p id="notice"><%= notice %></p>
+    <h3>Устройства (поиск всего : <%= @devices.count %> )</h3>
+    <p id="debug" class="text-danger"> SQL: <%=  $search %> </p>
+</div>
+
+<div class="row">
+
+<div class="paginate">
+    <%= will_paginate %>
+</div>
+
+<table class="table table-bordered">
+  <thead  class="align-center"> 
+    <tr  class="text-center">
+      <th>
+	    <p>
+		Фото
+	    </p>
+      </th>
+      <th>
+	    <p>
+		Филиал
+	    </p>
+      </th>
+      <th>Наименование</th>
+	   <th>тип</th>
+      <th>Модель</th>
+      <th>инвентарный</th>
+      <th>серийный</th>
+      <th>дата производства</th>
+      <th>процессор</th>
+      <th>ОЗУ</th>
+      <th>тип ОС</th>
+      <th>Место установки</th>
+      <th>примечание</th>
+      <th>требуется списание</th>
+
+      <th>работает?</th>
+      <th>акт ремонта</th>
+      <th>в ремонте?</th>
+      <th>история перемещения</th>
+    	    <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody class="align-center">
+    <% @devices.each do |device| %>
+      <tr class="active text-center">
+	<td>    
+	    <%=link_to(image_tag(device.avatar.url(:thumb)), device.avatar.url, target: '_blank')   %>
+	</td>
+        <td><%= device.filial.name %></td>
+        <td><%= device.name %></td>
+        <td><%= device.type.name %></td>
+        <td><%= device.model %></td>
+        <td><%= device.invnum %></td>
+        <td><%= device.serial %></td>
+
+        <td>
+	    <% if !device.dateprod.nil? %>
+		<%= device.dateprod.strftime("%Y-%m") %>
+	    <% end %>
+	</td>
+        <td><%= device.proc %></td>
+        <td><%= device.ram %></td>
+        <td><%= device.typeos %></td>
+        <td><%= device.place %></td>
+        <td><%= device.mark %></td>
+        <td><%= device.cancellation %></td>
+
+        <td><%= device.iswork %></td>
+	<td>
+	    <%=link_to(image_tag(device.actimage.url(:thumb)), device.actimage.url, target: '_blank')   %>
+	</td>
+
+	<td>
+	    <% if device.actimage.exists? %>
+		<p  class="text-success"> ДА </p>
+	    <% else %>
+		
+		<p class="text-warning"> <b>НЕТ</b> </p>
+	    <% end %>
+	</td>
+    	<td>
+	    <%=  pluralize(device.histories.count, "item") %> 
+	</td>
+	</td>
+    	    <td><%= link_to 'показать', device , class: "btn btn-secondary" %></td>
+    	    <td><%= link_to 'ред.', edit_device_path(device) , class: "btn btn-primary"  %></td>
+    	    <td><%= link_to 'Удалить', device, method: :delete, data: { confirm: 'Уверен?' } , class: "btn btn-danger"  %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= link_to 'новое устройство', new_device_path , class: "btn btn-success"  %>
+</div>
+

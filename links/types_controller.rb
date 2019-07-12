@@ -1,0 +1,1 @@
+/home/mfcadmin/rails/inv/inv02/app/controllers/types_controller.rb

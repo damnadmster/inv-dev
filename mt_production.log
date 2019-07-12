@@ -1,0 +1,3 @@
+multitail -cS squid ./log/production.log 
+# ./log/special.log
+

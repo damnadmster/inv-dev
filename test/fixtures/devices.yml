@@ -1,0 +1,27 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  model: MyString
+  invnum: MyString
+  serial: MyString
+  dateprod: 2019-06-03 11:43:53
+  proc: MyString
+  ram: MyString
+  place: MyString
+  mark: MyString
+  cancellation: false
+  type: one
+
+two:
+  name: MyString
+  model: MyString
+  invnum: MyString
+  serial: MyString
+  dateprod: 2019-06-03 11:43:53
+  proc: MyString
+  ram: MyString
+  place: MyString
+  mark: MyString
+  cancellation: false
+  type: two

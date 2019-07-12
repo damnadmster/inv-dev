@@ -1,0 +1,50 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Wishes:</strong>
+  <%= @requirement.wishes %>
+</p>
+
+<p>
+  <strong>Level:</strong>
+  <%= @requirement.level %>
+</p>
+
+<p>
+  <strong>Amount:</strong>
+  <%= @requirement.amount %>
+</p>
+
+<p>
+  <strong>Price:</strong>
+  <%= @requirement.price %>
+</p>
+
+<p>
+  <strong>Link:</strong>
+  <%= @requirement.link %>
+</p>
+
+<p>
+  <strong>For what:</strong>
+  <%= @requirement.for_what %>
+</p>
+
+<p>
+  <strong>Done:</strong>
+  <%= @requirement.done %>
+</p>
+
+<p>
+  <strong>Got:</strong>
+  <%= @requirement.got %>
+</p>
+
+<p>
+  <strong>Filial:</strong>
+  <%= @requirement.filial.name %>
+</p>
+
+<%= link_to 'Edit', edit_requirement_path(@requirement),  class: "btn btn-info"  %> |
+<%= link_to 'Back', requirements_path,  class: "btn btn-success"  %> |  
+<%= link_to 'новая потребность', new_requirement_path,  class: "btn btn-warning"  %>

@@ -1,0 +1,9 @@
+<% if logged_in? %>
+
+    <h1>Редактирование типа устройства</h1>
+
+    <%= render 'form', type: @type %>
+    <%= link_to 'показать', @type %> |
+    <%= link_to 'возврат', types_path %>
+
+<% end %>

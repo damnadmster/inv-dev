@@ -1,0 +1,51 @@
+<% provide(:title, 'Все пользователи') %>
+<h1>Пользователи АС</h1>
+<h2 class="p-3 mb-2 bg-success text-white text-center"> всего: <%= @users.count%></h2>
+
+<%= will_paginate  %>
+
+<table class="table table-bordered">
+  <thead  class="align-center"> 
+    <tr>
+      <th  class="text-center">имя</th>
+      <th  class="text-center">email</th>
+      <th  class="text-center">admin?</th>
+      <th  class="text-center">filial</th>
+	<% if current_user.admin? %>
+    	    <th  class="text-center">right</th>
+    	    <th  class="text-center" colspan="3"></th>
+	<% end %>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @users.each do |user| %>
+      <tr class="text-center">
+        <td><%= user.name %></td>
+        <td><%= user.email %></td>
+	<% if user.admin? %>
+    	    <td class="bg-primary">ДА</td>
+	<% else %>
+	    <td class="bg-secondary">НЕТ</td>
+	<% end %>
+        <td><%= user.filial.name %> id:(<%= user.filial.id %>) </td>
+	<% if current_user.admin? %>
+    	    <td><%= user.right %></td>
+    	    <td><%= link_to 'показать', user , class: "btn btn-secondary" %></td>
+    	    <td><%= link_to 'ред.', edit_user_path(user) , class: "btn btn-primary"  %></td>
+			<td><%= link_to 'Удалить', user, method: :delete, data: { confirm: 'Уверен?' } , class: "btn btn-danger"  %></td>
+	<% end %>
+      </tr>
+    <% end %>
+
+
+  </tbody>
+
+<div class="row">
+<p id="notice"><%= notice %></p>
+</table>
+
+<% if current_user.admin? %>
+    <%= link_to 'новый пользователь', new_user_path , class: "btn btn-success"  %>
+<% end %>
+</div>

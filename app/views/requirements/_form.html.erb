@@ -1,0 +1,63 @@
+<%= form_with(model: requirement, local: true) do |form| %>
+  <% if requirement.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(requirement.errors.count, "error") %> prohibited this requirement from being saved:</h2>
+
+      <ul>
+      <% requirement.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :wishes, "Потребность (описание)" %>
+    <%= form.text_area :wishes %>
+  </div>
+
+  <div class="field">
+    <%= form.label :level, "важность (1= высокая - 9 = низкая [ целое число ] )" %>
+    <%= form.number_field :level %>
+  </div>
+
+  <div class="field">
+    <%= form.label :amount, "количество" %>
+    <%= form.number_field :amount %>
+  </div>
+
+  <div class="field">
+    <%= form.label :price, "цена, рублей (целое число, без копеек)" %>
+    <%= form.number_field :price %>
+  </div>
+
+  <div class="field">
+    <%= form.label :link, "ссылка" %>
+    <%= form.text_field :link %>
+  </div>
+
+  <div class="field">
+    <%= form.label :for_what, "цель потребности" %>
+    <%= form.text_field :for_what %>
+  </div>
+
+  <div class="field">
+    <%= form.label :done, "завершено" %>
+    <%= form.check_box :done %>
+  </div>
+
+  <div class="field">
+    <%= form.label :got, "принята к исполнению" %>
+    <%= form.check_box :got %>
+  </div>
+
+  <div class="field">
+
+	<h2><%= form.label :filial_id, value: @fil.name %></h2>
+	<%= form.number_field :filial_id, value: @fil.id.to_i, :readonly => true, :hidden => true %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit  %>
+  </div>
+<% end %>

@@ -1,0 +1,177 @@
+<div class="row">
+  <div class="col-md-4 col-md-offset-3">
+
+	<%= form_with(model: device, local: true,  multipart: true) do |form| %>
+	  <% if device.errors.any? %>
+		<div id="error_explanation">
+		  <h2><%= pluralize(device.errors.count, "error") %> prohibited this device from being saved:</h2>
+
+		  <ul>
+		  <% device.errors.full_messages.each do |message| %>
+			<li><%= message %></li>
+		  <% end %>
+		  </ul>
+		</div>
+	  <% end %>
+			<table class="table table-bordered">
+			  <tbody class="align-center">
+				  <tr >
+					<td>Филиал</td>
+					<td>
+
+
+				<% if current_user.admin? %>
+						<%= select(:device, :filial_id, @fil_options ) %>
+				<% else %>
+					<h2><%= form.label :filail_id, value: @fil.name %></h2>
+					<%= form.number_field :filial_id, value: @fil.id.to_i, :readonly => true, :hidden => true %>
+				<% end %>
+
+				</td>
+				  </tr>
+				  <tr >
+					<td>тип оборудования</td>
+					<td>
+					<%= select(:device, :type_id, @type_options) %>
+				</td>
+				  </tr>
+
+				  <tr >
+					<td>фото</td>
+					<td>
+					<%=  form.file_field :avatar %>
+				</td>
+				  </tr>
+
+
+				  <tr >
+					<td>Наименование</td>
+					<td>
+					<div class="field">   <%= form.text_field :name %>  </div>
+				</td>
+				  </tr>
+
+				  <tr>
+					<td>Модель</td>
+				<td>
+					<div class="field">   <%= form.text_field :model %>  </div>        
+				</td>
+				  </tr>
+
+				  <tr>
+					<td>брендовый?</td>
+				<td>
+					
+				</td>
+				  </tr>
+
+				  <tr>
+					<td>инвентарный</td>
+				<td>
+					<div class="field">    <%= form.text_field :invnum %>  </div>
+				</td>
+				  </tr>
+
+				  <tr>
+					<td>серийный</td>
+				<td>
+					<div class="field">    <%= form.text_field :serial %>  </div>
+				</td>
+				  </tr>
+
+				  <tr>
+					<td> дата производства</td>
+				<td>
+					<div class="field">    
+					<%= date_select(:device, :dateprod, start_year: 2001, use_month_numbers: true,
+											  discard_day: true, include_blank: true)
+					%>    
+
+					</div>
+				</td>
+				  </tr>
+
+
+				  <tr>
+					<td> процессор </td>
+				<td>
+					<div class="field">    <%= form.text_field :proc %>  </div>
+				</td>
+				  </tr>
+
+				  <tr>
+					<td>ОЗУ </td>
+				<td>
+					<div class="field">    <%= form.text_field :ram %>  </div>
+				</td>
+				  </tr>
+
+				  <tr>
+					<td>Тип ОС </td>
+				<td>
+					<div class="field">    <%= form.text_field :typeos %>  </div>
+				</td>
+				  </tr>
+
+				  <tr>
+					<td>Сетевое имя узла </td>
+				<td>
+					<div class="field">    <%= form.text_field :nbname %>  </div>
+				</td>
+				  </tr>
+
+
+
+				  <tr>
+					<td> Место установки </td>
+				<td>
+					<div class="field">    <%= form.text_field :place %>  </div>
+				</td>
+				  </tr>
+
+				  <tr>
+					<td>Примечание</td>
+				<td>
+					<div class="field">    <%= form.text_field :mark %>  </div>
+				</td>
+				  </tr>
+
+				  <tr>
+					<td>Требуется списание</td>
+				<td>
+					<div class="field">    <%= form.check_box :cancellation %>  </div>
+				</td>
+				  </tr>
+
+
+				  <tr>
+					<td>работает?</td>
+				<td>
+					<div class="field">    <%= form.check_box :iswork %>  </div>
+				</td>
+				  </tr>
+
+
+				  <tr >
+					<td>Акт ремонта <p class="text-danger"><%= @device.actimage_file_name %></p></td>
+					<td>
+					<%=  form.file_field :actimage %>
+				</td>
+				  </tr>
+
+				  <tr>
+					<td>Удалить акт ремонта (сбросить признак "в ремонте")</td>
+				<td>
+					<div class="field">    <%= form.check_box :clearact %>  </div>
+				</td>
+				  </tr>
+				</tbody>
+			</table>    
+
+	  <div class="actions">
+		<%= form.submit  %>
+	  </div>
+	<% end %>
+
+	</div>
+</div>
