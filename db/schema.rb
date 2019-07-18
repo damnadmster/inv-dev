@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_09_110434) do
+ActiveRecord::Schema.define(version: 2019_07_11_125311) do
 
   create_table "devices", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name"
@@ -39,6 +39,9 @@ ActiveRecord::Schema.define(version: 2019_07_09_110434) do
     t.datetime "actimage_updated_at"
     t.boolean "clearact"
     t.string "type"
+    t.string "typeos"
+    t.string "nbname"
+    t.boolean "brand"
     t.index ["filial_id"], name: "index_devices_on_filial_id"
     t.index ["type_id"], name: "index_devices_on_type_id"
   end
@@ -67,6 +70,21 @@ ActiveRecord::Schema.define(version: 2019_07_09_110434) do
     t.index ["filial_id"], name: "index_people_on_filial_id"
   end
 
+  create_table "requirements", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.text "wishes"
+    t.integer "level"
+    t.integer "amount"
+    t.integer "price"
+    t.string "link"
+    t.string "for_what"
+    t.boolean "done"
+    t.boolean "got"
+    t.bigint "filial_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["filial_id"], name: "index_requirements_on_filial_id"
+  end
+
   create_table "types", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name"
     t.integer "num"
@@ -91,5 +109,6 @@ ActiveRecord::Schema.define(version: 2019_07_09_110434) do
   add_foreign_key "devices", "types"
   add_foreign_key "histories", "devices"
   add_foreign_key "people", "filials"
+  add_foreign_key "requirements", "filials"
   add_foreign_key "users", "filials"
 end

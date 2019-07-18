@@ -2,7 +2,45 @@
 
 <h1>потребности</h1>
 		<h2 class="p-3 mb-2 bg-success text-white text-center"> всего: <%= @requirements.count%></h2>
-		<%=  button_to "Экспортировать все потребности в CSV", export_req_path(format: "csv"), method: :post  %>
+		<p id="debug" class="text-danger"> SQL: <%=  $search_req %> </p>		
+		<%=  button_to "Экспортировать все потребности в CSV", export_req_path, method: :post  %>
+
+<div class="row">
+	<div class="col-sm">
+		<% if current_user.admin? %>
+		
+			<div class="w-100" style="background-color: #eee;">
+				<table id="tsearch" class="table table-bordered">
+				<tbody class="align-center">
+					<%= form_tag(requirements_path, method: :get)   do %>
+						<tr class="active text-center">
+						<td>   
+							<%= label_tag(:filial, "Филиал") %> 
+						</td>
+						<td>
+							<%= select_tag "select_filial", options_from_collection_for_select(@fil_options, "id", "name"), include_blank: true %>
+						</td>
+						<td>   
+							<%= label_tag(:siswork, "Важность") %> 
+						</td>
+						<td>
+							<%= select_tag "select_imp", options_for_select(@levels), include_blank: true %>
+						</td>						
+						<td>
+							<%= submit_tag "поиск", :class =>  "btn btn-sm btm-block" %>
+						</td> 
+						<td> 
+
+						</td> 
+						</tr>
+					<% end %>
+				</tbody>
+			</table>
+			</div> <!--DIV w-25  -->
+			<%=  button_to "Выбранные в CSV 2", export_req_path(format: "csv"), method: :post, params: { exportreq_fil: params[:select_filial], exportreq_imp: params[:select_imp] } %>
+		<% end %>
+    </div>
+</div>
 
 
 <div class="row">

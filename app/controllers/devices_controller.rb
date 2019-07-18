@@ -9,40 +9,41 @@ $hist= ""	#сохраняем значение филиала в edit и исп�
 ########################################################################################
   def filter_all
     if category = params[:search]
-	search_filial = category['select_filial']
-	search_type = category['select_type']
-	search_iswork =  params[:select_iswork]
-	search_cancel =  params[:select_cancel]
-	search_repair =  params[:select_repair]
-	SpecialLog.debug "IP:" + request.remote_ip + "user:" + current_user.name + " Controller: " + self.controller_name + "; View: " +  self.action_name + 	    "param search: filial " + search_filial + "; type " + search_type + "; is work " + search_iswork + "; cancel " + search_cancel
-#=begin #*********************************
-	arr = []
-	if !search_filial.blank? 
-	    sel1 = "filial_id = #{search_filial}"
-	    arr.push(sel1)
-	end
-	if !search_type.blank?
-	    sel2 =  "type_id = #{search_type}"
-	    arr.push(sel2)
-	end
-	if !search_cancel.blank?
-	    sel3 = " cancellation = #{search_cancel}"
-	    arr.push(sel3)
-	end
-	if !search_iswork.blank?
-	    sel4 = "iswork = #{search_iswork}"
-	    arr.push(sel4)
-	end
-	if !search_repair.blank?
-	    sel5 = "repair = #{search_repair}"
-	    arr.push(sel5)
-	end
-	$search = arr.map do |field|
-	    query_string = "#{field}"
-	end.join(' AND ')
-#=end #*********************************
+		search_filial = category['select_filial']
+		search_type = category['select_type']
+		search_iswork =  params[:select_iswork]
+		search_cancel =  params[:select_cancel]
+		search_repair =  params[:select_repair]
+		SpecialLog.debug "IP:" + request.remote_ip + "user:" + current_user.name + " Controller: " + self.controller_name + "; View: " +  self.action_name + 	    "param search: filial " + search_filial + "; type " + search_type + "; is work " + search_iswork + "; cancel " + search_cancel
+		#=begin #*********************************
+		arr = []
+		if !search_filial.blank? 
+			sel1 = "filial_id = #{search_filial}"
+			arr.push(sel1)
+		end
+		if !search_type.blank?
+			sel2 =  "type_id = #{search_type}"
+			arr.push(sel2)
+		end
+		if !search_cancel.blank?
+			sel3 = " cancellation = #{search_cancel}"
+			arr.push(sel3)
+		end
+		if !search_iswork.blank?
+			sel4 = "iswork = #{search_iswork}"
+			arr.push(sel4)
+		end
+		if !search_repair.blank?
+			sel5 = "repair = #{search_repair}"
+			arr.push(sel5)
+		end
+		$search = arr.map do |field|
+			query_string = "#{field}"
+		end.join(' AND ')
+		#=end #*********************************
+		@devices = Device.where($search).paginate(page: params[:page], :per_page => 20).order(:type_id)
     end
-    @devices = Device.where($search).paginate(page: params[:page], :per_page => 20).order(:type_id)
+
   end
 ########################################################################################
   def histories_path
@@ -54,16 +55,59 @@ $hist= ""	#сохраняем значение филиала в edit и исп�
   end
 ########################################################################################
   def index
-    if current_user.admin? 
-		@fil_options = Filial.all.map{|f| [ f.name, f.id ] }
-		@type_options = Type.all.map{|f| [ f.name, f.id ] }
-		@devices = Device.all.paginate(page: params[:page], :per_page => 20).order(:filial_id, :type_id)
-    else
-		@filial = Filial.find(current_user.filial_id)
-		fil_id = @filial.id
-		@type_options = Type.all.map{|f| [ f.name, f.id ] }
-		@devices = @filial.devices.paginate(page: params[:page], :per_page => 20).order(:type_id)
-    end
+	@type_options = Type.all.map{|f| [ f.name, f.id ] }  
+	if category = params[:search]	#если в фильтре выбран поиск
+		search_filial = category['select_filial']
+		search_type = category['select_type']
+		search_iswork =  params[:select_iswork]
+		search_cancel =  params[:select_cancel]
+		search_repair =  params[:select_repair]
+		SpecialLog.debug "IP:" + request.remote_ip + "user:" + current_user.name + " Controller: " + self.controller_name + "; View: " +  self.action_name + 	    "param search: filial " + search_filial + "; type " + search_type + "; is work " + search_iswork + "; cancel " + search_cancel
+		#=begin #*********************************
+		arr = []
+		if !search_filial.blank? 
+			sel1 = "filial_id = #{search_filial}"
+			arr.push(sel1)
+		end
+		if !search_type.blank?
+			sel2 =  "type_id = #{search_type}"
+			arr.push(sel2)
+		end
+		if !search_cancel.blank?
+			sel3 = " cancellation = #{search_cancel}"
+			arr.push(sel3)
+		end
+		if !search_iswork.blank?
+			sel4 = "iswork = #{search_iswork}"
+			arr.push(sel4)
+		end
+		if !search_repair.blank?
+			sel5 = "repair = #{search_repair}"
+			arr.push(sel5)
+		end
+		$search = arr.map do |field|
+			query_string = "#{field}"
+		end.join(' AND ')
+		#=end #*********************************
+		if current_user.admin? 
+			@fil_options = Filial.all.map{|f| [ f.name, f.id ] }
+			@devices = Device.where($search).paginate(page: params[:page], :per_page => 20).order(:type_id)
+		else
+			@filial = Filial.find(current_user.filial_id)
+			fil_id = @filial.id
+			@devices = @filial.devices..where($search).paginate(page: params[:page], :per_page => 20).order(:type_id)
+		end				
+		#@devices = Device.where($search).paginate(page: params[:page], :per_page => 20).order(:type_id)
+	else
+		if current_user.admin? 
+			@fil_options = Filial.all.map{|f| [ f.name, f.id ] }
+			@devices = Device.all.paginate(page: params[:page], :per_page => 20).order(:filial_id, :type_id)
+		else
+			@filial = Filial.find(current_user.filial_id)
+			fil_id = @filial.id
+			@devices = @filial.devices.paginate(page: params[:page], :per_page => 20).order(:type_id)
+		end		
+	end
 #    SpecialLog.debug "IP:" + request.remote_ip + "; user:" + current_user.name + "; Controller: " + self.controller_name + "; View: " +  self.action_name
 
   end

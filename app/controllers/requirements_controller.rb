@@ -1,33 +1,91 @@
 class RequirementsController < ApplicationController
   before_action :set_requirement, only: [:show, :edit, :update, :destroy]
   before_action :logged_in_user, only: [:edit, :update, :new, :index, :create, :show]
-  # GET /requirements
-  # GET /requirements.json
-  def index
+  $search_req = ""  
+########################################################################################
+  # удалить нах с маршрутом
+=begin  
+  def  filter_req
+	   if category = params[:searchreq]
+			search_filial = category['select_filial'] 
+			search_importance = params[:select_imp]
+			arr = []
+			if !search_filial.blank? 
+				sel1 = "filial_id = #{search_filial}"
+				arr.push(sel1)
+			end
+			if !search_importance.blank? 
+				sel2 = "level = #{search_importance}"
+				arr.push(sel2)
+			end			
+			$search_req = arr.map do |field|
+				query_string = "#{field}"
+			end.join(' AND ')			
+			@requirements = Requirement.where($search_req).paginate(page: params[:page], :per_page => 20)
+	   end
 
-
-		@fil_options = Filial.all.map{|f| [ f.name, f.id ] }
+  end
+=end
+  ########################################################################################  
+	def index
+		@fil_options = Filial.all #.map{|f| [ f.name, f.id ] }
 		@fil = Filial.find(current_user.filial_id)
 		@fil_id = @fil.id
-		@requirements = Requirement.paginate(page: params[:page], :per_page => 20).order(:filial_id)
-
-	
-  end
-
-
+		@levels = Requirement.select(:level).order(:level).map(&:level).uniq #.map(&:level).uniq # все существующие уровни
+		if (!params[:select_filial].blank?) or (!params[:select_imp].blank?)
+			$search_req = ""
+			search_filial = params[:select_filial]
+			search_importance = params[:select_imp]
+			arr = []
+			if !search_filial.blank? 
+				sel1 = "filial_id = #{search_filial}"
+				arr.push(sel1)
+			end
+			if !search_importance.blank? 
+				sel2 = "level = #{search_importance}"
+				arr.push(sel2)
+			end					
+			$search_req = arr.map do |field|
+				query_string = "#{field}"
+			end.join(' AND ')			
+			@requirements = Requirement.where($search_req).paginate(page: params[:page], :per_page => 20)
+		else
+			@requirements = Requirement.paginate(page: params[:page], :per_page => 20).order(:filial_id)
+		end
+	end
+########################################################################################
   def export_req
-	@req = Requirement.all.order( filial_id: :asc, level: :asc)
+	if (!params[:exportreq_fil].blank?) or (!params[:exportreq_imp].blank?)
+		$search_req = ""
+		imp = params[:exportreq_imp]
+		fil = params[:exportreq_fil]
+		arr = []
+		if !fil.blank? 
+			sel1 = "filial_id = #{fil}"
+			arr.push(sel1)
+		end
+		if !imp.blank? 
+			sel2 = "level = #{imp}"
+			arr.push(sel2)
+		end					
+		$search_req = arr.map do |field|
+			query_string = "#{field}"
+		end.join(' AND ')			
+		@req = Requirement.where($search_req)
+	else
+		@req = Requirement.all.order( filial_id: :asc, level: :asc)
+	end
+begin	
 	respond_to do |format|
-	    format.html
+			format.html
     	    format.csv { send_data  @req.to_csv_new(col_sep: "\t"),  :type => 'charset=iso-8859-1', filename: "Req-#{Date.today}.csv" }
 	end
+end	
   end
-
-
+########################################################################################
   def show
   end
-
-  # GET /requirements/new
+########################################################################################
   def new
   	
     @requirement = Requirement.new
@@ -35,17 +93,14 @@ class RequirementsController < ApplicationController
 		@fil = Filial.find(current_user.filial_id)
 		@fil_id = @fil.id
   end
-
-  # GET /requirements/1/edit
+########################################################################################
   def edit
 			
   		@fil_options = Filial.all.map{|f| [ f.name, f.id ] }
 		@fil = Filial.find(current_user.filial_id)
 		@fil_id = @fil.id
   end
-
-  # POST /requirements
-  # POST /requirements.json
+########################################################################################
   def create
     @requirement = Requirement.new(requirement_params)
     respond_to do |format|
@@ -58,9 +113,7 @@ class RequirementsController < ApplicationController
       end
     end
   end
-
-  # PATCH/PUT /requirements/1
-  # PATCH/PUT /requirements/1.json
+########################################################################################
   def update
 	SpecialLog.debug "IP:" + request.remote_ip + "; user:" + current_user.name  + "; Controller: " + self.controller_name + "; View: " +  self.action_name 
     respond_to do |format|
@@ -73,9 +126,7 @@ class RequirementsController < ApplicationController
       end
     end
   end
-
-  # DELETE /requirements/1
-  # DELETE /requirements/1.json
+########################################################################################
   def destroy
   	SpecialLog.debug "IP:" + request.remote_ip + "; user:" + current_user.name  + "; Controller: " + self.controller_name + "; View: " +  self.action_name 
     @requirement.destroy
@@ -84,7 +135,7 @@ class RequirementsController < ApplicationController
       format.json { head :no_content }
     end
   end
-
+########################################################################################
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_requirement

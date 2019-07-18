@@ -1,0 +1,42 @@
+<h1>Export to CSV pressed</h1>
+<p>exportreq_imp <%= params[:exportreq_imp]%></p>
+<p> exportreq_fil<%= params[:exportreq_fil]%></p>
+<div class="row">
+    <div class="col-sm">		
+		<table  class="table  table-bordered table-hover">
+		  <thead>
+			<tr>
+			  <th>Филиал</th>
+			  <th>Потребность</th>
+			  <th>Важность</th>
+			  <th>кол-во</th>
+			  <th>цена</th>
+			  <th>ссылка</th>
+			  <th>Цель потребности</th>
+			  <th>Завершено</th>
+			  <th>принято в исполнение</th>
+			  <th colspan="3"></th>
+			</tr>
+		  </thead>
+
+		  <tbody>
+			<% @req.each do |requirement| %>
+			  <tr>
+				<td><%= requirement.filial.name %></td>
+				<td><%= requirement.wishes %></td>
+				<td><%= requirement.level %></td>
+				<td><%= requirement.amount %></td>
+				<td><%= requirement.price %></td>
+				<td><%= requirement.link %></td>
+				<td><%= requirement.for_what %></td>
+				<td><%= requirement.done %></td>
+				<td><%= requirement.got %></td>
+				<td><%= link_to 'Показать', requirement %></td>
+				<td><%= link_to 'Редактировать', edit_requirement_path(requirement),  class: "btn btn-info"  %></td>
+				<td><%= link_to 'Удалить', requirement, method: :delete, data: { confirm: 'Are you sure?' },  class: "btn btn-danger"  %></td>
+			  </tr>
+			<% end %>
+		  </tbody>
+		</table>
+	</div>
+</div>

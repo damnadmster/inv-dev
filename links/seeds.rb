@@ -1,1 +1,0 @@
-/home/mfcadmin/rails/inv/inv02/db/seeds.rb
